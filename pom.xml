@@ -20,6 +20,13 @@
 			<version>1.16.5-R0.1-SNAPSHOT</version>
 			<scope>provided</scope>
 		</dependency>
+		<dependency>
+			<groupId>spigot</groupId>
+			<artifactId>spigot-server</artifactId>
+			<version>1.16.5-R0.1-SNAPSHOT</version>
+			<scope>system</scope>
+			<systemPath>${pom.basedir}/server/spigot-1.16.5.jar</systemPath>
+		</dependency>
 	</dependencies>
 
 	<build>
