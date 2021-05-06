@@ -2,3 +2,8 @@
 .settings
 .project
 .classpath
+
+# exclude server/ except spigot-1.16.5.jar and start.bat
+server/**
+!server/spigot*.jar
+!server/start.bat
