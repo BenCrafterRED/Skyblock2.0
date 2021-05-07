@@ -1,22 +1,24 @@
 package skyblock.main;
 
-import org.apache.logging.log4j.LogManager;
-import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.configuration.file.YamlConfiguration;
+import java.util.Random;
+
+import org.bukkit.World;
+import org.bukkit.generator.ChunkGenerator;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class Main extends JavaPlugin {
 	
+	private static Main instance;
+	public static String logPrefix;
+	
 	@Override
 	public void onLoad() {
-		FileConfiguration bukkitConfig = new YamlConfiguration();
-		try {
-			LogManager.getLogger().info("Loading bukkit.yml");
-			bukkitConfig.load("bukkit.yml");
-		} catch (Exception e) {
-			LogManager.getLogger().error("Could not load bukkit.yml");
-			e.printStackTrace();
-		}
+		instance = this;
+		logPrefix = "[" + getName() + "]";
+		ServerConfigs.loadConfigs();
+		String generatorPath = "worlds." + ServerConfigs.serverProperties.getProperty("level-name", "world") + ".generator";
+		ServerConfigs.bukkitConfig.set(generatorPath, getName());
+		ServerConfigs.saveBukkitYml();
 	}
 	
 	@Override
@@ -27,5 +29,17 @@ public class Main extends JavaPlugin {
 	public void onDisable() {
 	}
 	
+	@Override
+	public ChunkGenerator getDefaultWorldGenerator(String worldName, String id) {
+		return new ChunkGenerator() {
+			@Override
+			public ChunkData generateChunkData(World world, Random random, int x, int z, BiomeGrid biome) {
+				return createChunkData(world);
+			}
+		};
+	}
 	
+	public static Main instance() {
+		return instance;
+	}
 }

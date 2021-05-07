@@ -6,6 +6,11 @@
 	<artifactId>skyblock-2.0</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 
+	<properties>
+		<maven.compiler.source>1.8</maven.compiler.source>
+		<maven.compiler.target>1.8</maven.compiler.target>
+	</properties>
+
 	<repositories>
 		<repository>
 			<id>spigot-repo</id>
@@ -25,7 +30,7 @@
 			<artifactId>spigot-server</artifactId>
 			<version>1.16.5-R0.1-SNAPSHOT</version>
 			<scope>system</scope>
-			<systemPath>${pom.basedir}/server/spigot-1.16.5.jar</systemPath>
+			<systemPath>${project.basedir}/server/spigot-1.16.5.jar</systemPath>
 		</dependency>
 	</dependencies>
 
