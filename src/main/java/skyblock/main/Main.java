@@ -16,9 +16,6 @@ public class Main extends JavaPlugin {
 		instance = this;
 		logPrefix = "[" + getName() + "]";
 		ServerConfigs.loadConfigs();
-		String generatorPath = "worlds." + ServerConfigs.serverProperties.getProperty("level-name", "world") + ".generator";
-		ServerConfigs.bukkitConfig.set(generatorPath, getName());
-		ServerConfigs.saveBukkitYml();
 	}
 	
 	@Override
@@ -39,7 +36,7 @@ public class Main extends JavaPlugin {
 		};
 	}
 	
-	public static Main instance() {
+	public static Main get() {
 		return instance;
 	}
 }
