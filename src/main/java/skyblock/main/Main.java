@@ -1,32 +1,33 @@
 package skyblock.main;
 
-import java.util.Random;
+import java.util.logging.Level;
 
-import org.bukkit.World;
-import org.bukkit.generator.ChunkGenerator;
+import org.bukkit.command.SimpleCommandMap;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import skyblock.python.PythonModule;
 
 public class Main extends JavaPlugin {
 	
 	private static Main instance;
-	public static String logPrefix;
-	
-	@Override
-	public void onLoad() {
-		instance = this;
-		logPrefix = "[" + getName() + "]";
-		ServerConfigs.loadConfigs();
-	}
+	public PythonModule pythonModule;
+	public SimpleCommandMap commandMap;
 	
 	@Override
 	public void onEnable() {
+		instance = this;
+		ServerConfigs.loadConfigs();
+		
+		loadCommandMap();
+		
+		pythonModule = new PythonModule(this);
 	}
 	
 	@Override
 	public void onDisable() {
 	}
 	
-	@Override
+	/*@Override
 	public ChunkGenerator getDefaultWorldGenerator(String worldName, String id) {
 		return new ChunkGenerator() {
 			@Override
@@ -34,6 +35,14 @@ public class Main extends JavaPlugin {
 				return createChunkData(world);
 			}
 		};
+	}*/
+	
+	private void loadCommandMap() {
+		try {
+			commandMap = (SimpleCommandMap) getServer().getClass().getMethod("getCommandMap").invoke(getServer());
+		} catch (Exception e) {
+			getLogger().log(Level.SEVERE, "Could not get server's command map.", e);
+		}
 	}
 	
 	public static Main get() {

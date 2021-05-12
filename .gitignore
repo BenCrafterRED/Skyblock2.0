@@ -3,9 +3,10 @@
 .project
 .classpath
 
-# exclude server/ except start.bat
+# exclude server/ except start.bat and dependency plugins
 server/**
 !server/start.bat
+!server/plugins/jython*.jar
 
 # exclude build files
 target/
