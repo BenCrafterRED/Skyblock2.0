@@ -29,7 +29,7 @@ public class CommandSenderWriter extends Writer {
 
 	@Override
 	public void flush() throws IOException {
-		sender.sendMessage(buffer.toString());
+		sender.sendMessage(buffer.toString().stripTrailing());
 		buffer = new StringBuilder();
 	}
 
