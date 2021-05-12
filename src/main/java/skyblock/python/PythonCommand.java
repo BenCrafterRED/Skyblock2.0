@@ -31,6 +31,7 @@ public class PythonCommand extends Command {
 	protected PythonCommand(Plugin plugin) {
 		super("python", "Runs Python scripts and commands using Jython 2.7.2", "<command> book", Collections.emptyList());
 		this.plugin = plugin;
+		this.interpreters = new HashMap<>();
 		setPermission(PermissionDefault.OP.name());
 	}
 
