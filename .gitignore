@@ -6,6 +6,8 @@
 # exclude server/ except start.bat and dependency plugins
 server/**
 !server/start.bat
+!server/plugins
+server/plugins/**
 !server/plugins/jython*.jar
 
 # exclude build files
