@@ -4,3 +4,4 @@ description: a fully configurable skyblock plugin
 main: skyblock.main.Main
 api-version: 1.16
 load: startup
+depend: [Jython]
