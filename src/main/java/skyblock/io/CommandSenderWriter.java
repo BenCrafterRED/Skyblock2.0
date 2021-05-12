@@ -33,7 +33,7 @@ public class CommandSenderWriter extends Writer {
 		if (!message.isEmpty()) {
 			sender.sendMessage(message);
 		}
-		buffer = new StringBuilder();
+		buffer = new StringBuilder(prefix);
 	}
 
 	@Override
