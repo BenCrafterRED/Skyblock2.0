@@ -30,7 +30,7 @@ public class CommandSenderWriter extends Writer {
 	@Override
 	public void flush() throws IOException {
 		String message = buffer.toString().trim();
-		if (message.isBlank()) {
+		if (message.isEmpty()) {
 			sender.sendMessage(message);
 		}
 		buffer = new StringBuilder();
