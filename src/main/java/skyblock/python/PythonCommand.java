@@ -54,15 +54,17 @@ public class PythonCommand extends Command {
 				}
 				BookMeta bookMeta = (BookMeta) book.getItemMeta();
 				String script = String.join("\n", bookMeta.getPages());
-				InteractiveConsole interpreter = getInterpreter(player);
-				PyCode compiled = interpreter.compile(script, "book");
-				try {
-					interpreter.exec(compiled);
-				} catch (Exception e) {
-					plugin.getLogger().log(Level.WARNING, "Exception occured while trying to execute python code.", e);
-					//PyException exc = Py.JavaError(e);
-					//player.sendMessage(Py.formatException(exc.type, exc.value));
-				}
+				new Thread(() -> {
+					InteractiveConsole interpreter = getInterpreter(player);
+					PyCode compiled = interpreter.compile(script, "book");
+					try {
+						interpreter.exec(compiled);
+					} catch (Exception e) {
+						plugin.getLogger().log(Level.WARNING, "Exception occured while trying to execute python code.", e);
+						//PyException exc = Py.JavaError(e);
+						//player.sendMessage(Py.formatException(exc.type, exc.value));
+					}
+				}).start();
 				return true;
 			}
 		}
