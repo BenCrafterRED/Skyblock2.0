@@ -8,6 +8,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import nl.rutgerkok.worldgeneratorapi.WorldGeneratorApi;
 import nl.rutgerkok.worldgeneratorapi.WorldRef;
+import nl.rutgerkok.worldgeneratorapi.decoration.BaseDecorationType;
 import skyblock.python.PythonModule;
 
 public class Main extends JavaPlugin {
@@ -35,8 +36,9 @@ public class Main extends JavaPlugin {
 		return WorldGeneratorApi
 				.getInstance(this, 1, 1)
 				.createCustomGenerator(WorldRef.ofName(worldName), generator -> {
-					generator.setBaseTerrainGenerator(new TestGenerator());
-					getLogger().info("Enabled test generator for world \"" + worldName + "\".");
+					generator.setBaseTerrainGenerator(new VoidGenerator());
+					generator.getWorldDecorator().withoutDefaultBaseDecorations(BaseDecorationType.BEDROCK);
+					getLogger().info("Enabled void generator for world \"" + worldName + "\".");
 				});
 	}
 	
