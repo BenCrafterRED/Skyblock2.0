@@ -29,10 +29,8 @@ public class CommandSenderWriter extends Writer {
 
 	@Override
 	public void flush() throws IOException {
-		String message = buffer.toString().trim();
-		if (!message.isEmpty()) {
-			sender.sendMessage(message);
-		}
+		String message = buffer.toString();
+		sender.sendMessage(message);
 		buffer = new StringBuilder(prefix);
 	}
 

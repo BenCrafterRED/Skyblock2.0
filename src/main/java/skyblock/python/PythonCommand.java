@@ -16,6 +16,7 @@ import org.bukkit.permissions.PermissionDefault;
 import org.bukkit.plugin.Plugin;
 import org.python.core.Py;
 import org.python.core.PyCode;
+import org.python.core.PyException;
 import org.python.core.PyObject;
 import org.python.core.PyStringMap;
 import org.python.util.InteractiveConsole;
@@ -55,13 +56,13 @@ public class PythonCommand extends Command {
 				BookMeta bookMeta = (BookMeta) book.getItemMeta();
 				String script = String.join("\n", bookMeta.getPages());
 				InteractiveConsole interpreter = getInterpreter(player);
-				PyCode compiled = interpreter.compile(script, "book");
 				try {
+					PyCode compiled = interpreter.compile(script, "book");
 					interpreter.exec(compiled);
 				} catch (Exception e) {
 					plugin.getLogger().log(Level.WARNING, "Exception occured while trying to execute python code.", e);
-					//PyException exc = Py.JavaError(e);
-					//player.sendMessage(Py.formatException(exc.type, exc.value));
+					PyException exc = Py.JavaError(e);
+					player.sendMessage(ChatColor.RED + Py.formatException(exc.type, exc.value));
 				}
 				return true;
 			}

@@ -27,21 +27,11 @@ public class Main extends JavaPlugin {
 	public void onDisable() {
 	}
 	
-	/*@Override
-	public ChunkGenerator getDefaultWorldGenerator(String worldName, String id) {
-		return new ChunkGenerator() {
-			@Override
-			public ChunkData generateChunkData(World world, Random random, int x, int z, BiomeGrid biome) {
-				return createChunkData(world);
-			}
-		};
-	}*/
-	
 	private void loadCommandMap() {
 		try {
 			commandMap = (SimpleCommandMap) getServer().getClass().getMethod("getCommandMap").invoke(getServer());
 		} catch (Exception e) {
-			getLogger().log(Level.SEVERE, "Could not get server's command map.", e);
+			getLogger().log(Level.SEVERE, "Could not fetch server's command map.", e);
 		}
 	}
 	
