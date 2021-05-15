@@ -1,4 +1,4 @@
-name: Skyblock2.0
+name: skyblock
 version: 0.0.1-dev
 description: a fully configurable skyblock plugin
 main: skyblock.main.Main
