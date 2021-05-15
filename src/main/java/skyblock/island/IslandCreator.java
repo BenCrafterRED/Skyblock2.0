@@ -31,7 +31,7 @@ public class IslandCreator {
 	public void createClassicIsland(Location location) {
 		World world = location.getWorld();
 		
-		for (int y = location.getBlockY(); y < location.getBlockY(); y++) {
+		for (int y = location.getBlockY() - 3; y < location.getBlockY() - 1; y++) {
 			for (int x = location.getBlockX(); x < location.getBlockX(); x++) {
 				for (int z = location.getBlockZ(); z < location.getBlockZ(); z++) {
 					world.getBlockAt(x, y, z).setType(Material.DIRT);
@@ -41,11 +41,11 @@ public class IslandCreator {
 		
 		for (int x = location.getBlockX() - 1; x < location.getBlockX() + 5; x++) {
 			for (int z = location.getBlockZ() - 1; z < location.getBlockZ() + 5; z++) {
-				world.getBlockAt(x, location.getBlockY(), z).setType(Material.GRASS);
+				world.getBlockAt(x, location.getBlockY() - 1, z).setType(Material.GRASS);
 			}
 		}
 		
-		for (int y = location.getBlockY() - 2; y <= location.getBlockY(); y++) {
+		for (int y = location.getBlockY() - 3; y < location.getBlockY(); y++) {
 			for (int x = location.getBlockX() + 2; x < location.getBlockX() + 5; x++) {
 				for (int z = location.getBlockZ() + 2; z < location.getBlockZ() + 5; z++) {
 					world.getBlockAt(x, y, z).setType(Material.AIR);
@@ -53,7 +53,7 @@ public class IslandCreator {
 			}
 		}
 		
-		Block startChest = world.getBlockAt(location.getBlockX() + 4, location.getBlockY() + 1, location.getBlockZ());
+		Block startChest = world.getBlockAt(location.getBlockX() + 4, location.getBlockY(), location.getBlockZ());
 		startChest.setType(Material.CHEST);
 		BlockData chestBlockData = startChest.getBlockData();
 		((Directional) chestBlockData).setFacing(BlockFace.WEST);
@@ -61,7 +61,7 @@ public class IslandCreator {
 		Chest chestData = (Chest) startChest.getState();
 		chestData.setLootTable(plugin.getServer().getLootTable(new NamespacedKey(plugin, "chests/start_chest")));
 		
-		world.generateTree(location.add(-1, +1, +4), TreeType.TREE);
+		world.generateTree(location.add(-1, 0, 4), TreeType.TREE);
 		
 	}
 }
