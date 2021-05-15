@@ -3,8 +3,11 @@ package skyblock.main;
 import java.util.logging.Level;
 
 import org.bukkit.command.SimpleCommandMap;
+import org.bukkit.generator.ChunkGenerator;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import nl.rutgerkok.worldgeneratorapi.WorldGeneratorApi;
+import nl.rutgerkok.worldgeneratorapi.WorldRef;
 import skyblock.python.PythonModule;
 
 public class Main extends JavaPlugin {
@@ -25,6 +28,16 @@ public class Main extends JavaPlugin {
 	
 	@Override
 	public void onDisable() {
+	}
+	
+	@Override
+	public ChunkGenerator getDefaultWorldGenerator(String worldName, String id) {
+		return WorldGeneratorApi
+				.getInstance(this, 1, 1)
+				.createCustomGenerator(WorldRef.ofName(worldName), generator -> {
+					generator.setBaseTerrainGenerator(new TestGenerator());
+					getLogger().info("Enabled test generator for world \"" + worldName + "\".");
+				});
 	}
 	
 	private void loadCommandMap() {
