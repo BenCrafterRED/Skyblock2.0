@@ -26,6 +26,8 @@ public class Main extends JavaPlugin {
 		loadCommandMap();
 		
 		pythonModule = new PythonModule(this);
+		
+		
 	}
 	
 	@Override

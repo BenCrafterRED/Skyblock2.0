@@ -1,5 +1,5 @@
 package skyblock.island;
 
-public class IslandCommand {
+public class IslandCommand extends Command {
 
 }
