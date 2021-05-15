@@ -3,6 +3,7 @@ package skyblock.main;
 import java.util.logging.Level;
 
 import org.bukkit.command.SimpleCommandMap;
+import org.bukkit.event.Listener;
 import org.bukkit.generator.ChunkGenerator;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -25,6 +26,8 @@ public class Main extends JavaPlugin {
 		loadCommandMap();
 		
 		pythonModule = new PythonModule(this);
+		
+		getServer().getPluginManager().registerEvents(new IslandCreator(), this);
 	}
 	
 	@Override
