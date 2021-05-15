@@ -37,7 +37,7 @@
 			<artifactId>worldgeneratorapi</artifactId>
 			<version>1.1.4</version>
 			<scope>system</scope>
-			<systemPath>${project.basedir}/server/WorldGeneratorApi-1.1.4.jar</systemPath>
+			<systemPath>${project.basedir}/server/plugins/WorldGeneratorApi-1.1.4.jar</systemPath>
 		</dependency>
 		<dependency>
 			<groupId>org.python</groupId>
