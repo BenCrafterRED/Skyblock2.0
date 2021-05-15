@@ -10,6 +10,7 @@ import nl.rutgerkok.worldgeneratorapi.WorldGeneratorApi;
 import nl.rutgerkok.worldgeneratorapi.WorldRef;
 import nl.rutgerkok.worldgeneratorapi.decoration.BaseDecorationType;
 import skyblock.generator.VoidGenerator;
+import skyblock.island.IslandCommand;
 import skyblock.python.PythonModule;
 
 public class Main extends JavaPlugin {
@@ -27,7 +28,7 @@ public class Main extends JavaPlugin {
 		
 		pythonModule = new PythonModule(this);
 		
-		
+		commandMap.register(getName(), new IslandCommand());
 	}
 	
 	@Override
