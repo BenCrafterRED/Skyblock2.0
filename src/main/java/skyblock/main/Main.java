@@ -2,8 +2,10 @@ package skyblock.main;
 
 import java.util.logging.Level;
 
+
 import org.bukkit.command.SimpleCommandMap;
 import org.bukkit.generator.ChunkGenerator;
+import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import nl.rutgerkok.worldgeneratorapi.WorldGeneratorApi;
@@ -28,7 +30,10 @@ public class Main extends JavaPlugin {
 		
 		pythonModule = new PythonModule(this);
 		
-		commandMap.register(getName(), new IslandCommand());
+		commandMap.register(getName(), new IslandCommand(this));
+		
+		PluginManager pluginManager = getServer().getPluginManager();
+
 	}
 	
 	@Override
