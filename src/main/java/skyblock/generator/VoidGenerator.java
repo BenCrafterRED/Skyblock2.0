@@ -1,4 +1,4 @@
-package skyblock.main;
+package skyblock.generator;
 
 import org.bukkit.Material;
 
