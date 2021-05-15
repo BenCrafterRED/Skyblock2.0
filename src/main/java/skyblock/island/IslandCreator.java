@@ -21,7 +21,7 @@ public class IslandCreator {
 	}
 	
 	public void createIsland(Location location, IslandType type) {
-		if (type == IslandType.CLASSIC) {
+		if (type == IslandType.classic) {
 			createClassicIsland(location);
 		} else {
 			throw new IllegalArgumentException("Unknown IslandType: " + type);
