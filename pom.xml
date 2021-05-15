@@ -16,6 +16,10 @@
 			<id>spigot-repo</id>
 			<url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
 		</repository>
+		<repository>
+		    <id>codemc-repo</id>
+		    <url>https://repo.codemc.io/repository/maven-public/</url>
+		</repository>
 	</repositories>
 
 	<dependencies>
@@ -33,11 +37,10 @@
 			<systemPath>${project.basedir}/server/spigot-1.16.5.jar</systemPath>
 		</dependency>
 		<dependency>
-			<groupId>worldgeneratorapi</groupId>
+			<groupId>nl.rutgerkok</groupId>
 			<artifactId>worldgeneratorapi</artifactId>
-			<version>1.1.4</version>
-			<scope>system</scope>
-			<systemPath>${project.basedir}/server/plugins/WorldGeneratorApi-1.1.4.jar</systemPath>
+			<version>1.0</version>
+			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.python</groupId>
