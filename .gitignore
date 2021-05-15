@@ -9,6 +9,7 @@ server/**
 !server/plugins
 server/plugins/**
 !server/plugins/jython*.jar
+!server/plugins/WorldGeneratorApi*.jar
 
 # exclude build files
 target/
