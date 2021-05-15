@@ -33,6 +33,13 @@
 			<systemPath>${project.basedir}/server/spigot-1.16.5.jar</systemPath>
 		</dependency>
 		<dependency>
+			<groupId>worldgeneratorapi</groupId>
+			<artifactId>worldgeneratorapi</artifactId>
+			<version>1.1.4</version>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/server/WorldGeneratorApi-1.1.4.jar</systemPath>
+		</dependency>
+		<dependency>
 			<groupId>org.python</groupId>
 			<artifactId>jython</artifactId>
 			<version>2.7.2</version>
