@@ -20,7 +20,7 @@ public class IslandCommand extends Command{
 	private Plugin plugin;
 
 	public IslandCommand(Plugin plugin) {
-		super("island", "##", "/island create", Arrays.asList("is"));
+		super("island", "Creates a new island", "/island <create, delete or home> <type> <coordinates>", Arrays.asList("is"));
 		this.plugin = plugin;
 		
 		
@@ -31,6 +31,27 @@ public class IslandCommand extends Command{
 	public boolean execute(CommandSender sender, String commandLabel, String[] args) {
 		if(sender instanceof Player) {
 			Player player = ((Player) sender);
+			if(args[0].equals("home")){
+				if(player.getPersistentDataContainer().has(new NamespacedKey(plugin,"islandHomeX"), PersistentDataType.INTEGER)) {
+					Location location = player.getLocation();
+					location.setX(player.getPersistentDataContainer().get(new NamespacedKey(plugin,"islandHomeX"), PersistentDataType.INTEGER));
+					location.setY(player.getPersistentDataContainer().get(new NamespacedKey(plugin,"islandHomeY"), PersistentDataType.INTEGER));
+					location.setZ(player.getPersistentDataContainer().get(new NamespacedKey(plugin,"islandHomeZ"), PersistentDataType.INTEGER));
+					player.teleport(location.add(0.5, 2.5, 0.5));
+					return false;
+				}else {
+					player.sendMessage(ChatColor.DARK_RED+"you have no homepoint!");
+					return false;
+				}
+				
+			}
+			if(args[0].equals("delete")){
+				player.getPersistentDataContainer().set(new NamespacedKey(plugin,"hasIsland"), PersistentDataType.INTEGER, 0);
+				player.getPersistentDataContainer().remove(new NamespacedKey(plugin,"islandHomeX"));
+				player.getPersistentDataContainer().remove(new NamespacedKey(plugin,"islandHomeY"));
+				player.getPersistentDataContainer().remove(new NamespacedKey(plugin,"islandHomeZ"));
+				return false;
+			}
 			if(player.getPersistentDataContainer().getOrDefault(new NamespacedKey(plugin,"hasIsland"), PersistentDataType.INTEGER, 0) <= 0) {
 				player.getPersistentDataContainer().set(new NamespacedKey(plugin,"hasIsland"), PersistentDataType.INTEGER, 1);
 				if(args.length == 5) {
@@ -38,30 +59,37 @@ public class IslandCommand extends Command{
 						IslandType type = IslandType.valueOf(args[1]);
 						Location location = player.getLocation();
 						location.setX(Integer.valueOf(args[2])+0.5);
-						location.setY(Integer.valueOf(args[3])+0.5);
+						location.setY(Integer.valueOf(args[3])-1.5);
 						location.setZ(Integer.valueOf(args[4])+0.5);
+						player.getPersistentDataContainer().set(new NamespacedKey(plugin,"islandHomeX"), PersistentDataType.INTEGER, location.getBlockX());
+						player.getPersistentDataContainer().set(new NamespacedKey(plugin,"islandHomeY"), PersistentDataType.INTEGER, location.getBlockY());
+						player.getPersistentDataContainer().set(new NamespacedKey(plugin,"islandHomeZ"), PersistentDataType.INTEGER, location.getBlockZ());
+						player.teleport(location.add(0, 1.5, 0));
 						IslandCreator Ceator = new IslandCreator(plugin);
 						player.setBedSpawnLocation(location, true);
 						Ceator.createIsland(location, type);
-						player.teleport(location.add(1, 0, -4));
 						player.setGameMode(GameMode.SURVIVAL);
+						player.setFoodLevel(20);
 						
 						ItemStack item = new ItemStack(Material.WRITTEN_BOOK);
 						BookMeta Meta = (BookMeta)item.getItemMeta();
-						Meta.addPage(ChatColor.GOLD+("Wilkommen"));
+						Meta.setAuthor("Server");
+						Meta.setTitle("Welcome");
+						Meta.addPage(ChatColor.GOLD+"Welcome to skyblock\n\n"+ChatColor.BLUE+"Have Fun!");
 						item.setItemMeta(Meta);
 						
-						player.openBook(null);
+						player.openBook(item);
 					}else {
-						player.sendMessage(ChatColor.RED+"The parameter " +args[0]+ " does not exist");					
-					}
+						player.sendMessage(ChatColor.RED+"The parameter " +args[0]+ " does not exist!");
+					}					
+				}else {
+						player.sendMessage(ChatColor.DARK_RED+"Invalid syntax!");
 				}
 				
 				
 				
 			}else {
 				sender.sendMessage(ChatColor.RED+"You have ready an insland!");
-				player.getPersistentDataContainer().set(new NamespacedKey(plugin,"hasIsland"), PersistentDataType.INTEGER, 0);
 			}
 		}
 		return false;
