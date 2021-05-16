@@ -23,9 +23,41 @@ public class IslandCreator {
 	public void createIsland(Location location, IslandType type) {
 		if (type == IslandType.classic) {
 			createClassicIsland(location);
-		} else {
+		} else if (type == IslandType.round) {
+			createRoundIsland(location);
+		}else {
 			throw new IllegalArgumentException("Unknown IslandType: " + type);
 		}
+	}
+	
+	public void createRoundIsland(Location location) {
+		int xStart = location.getBlockX()+2;
+    	int yStart = location.getBlockY()-1;
+    	int zStart = location.getBlockZ();
+    	int r = 4;
+    	World world = location.getWorld();
+        for(int x = xStart - r; x <= xStart + r; x++){
+            for(int y = yStart - r; y <= yStart; y++){
+                for(int z = zStart - r; z <= zStart + r; z++){
+                    if((x-xStart)*(x-xStart)+(y-yStart)*(y-yStart)+(z-zStart)*(z-zStart) < r*r){
+                    	location.setX(x);
+                    	location.setY(y);
+                    	location.setZ(z);
+                    	world.getBlockAt(location).setType(Material.GRASS_BLOCK);
+                    }
+                }
+            }
+        }
+        Block startChest = world.getBlockAt(location.getBlockX() -4, location.getBlockY()+1, location.getBlockZ()-2);
+		startChest.setType(Material.CHEST);
+		BlockData chestBlockData = startChest.getBlockData();
+		((Directional) chestBlockData).setFacing(BlockFace.WEST);
+		startChest.setBlockData(chestBlockData);
+		Chest chestData = (Chest) startChest.getState();
+		chestData.setLootTable(plugin.getServer().getLootTable(new NamespacedKey(plugin, "chests/start_chest")));
+        
+        world.generateTree(location.add(-3, 0, -2), TreeType.TREE);
+        
 	}
 	
 	public void createClassicIsland(Location location) {
