@@ -32,8 +32,8 @@ public class IslandCreator {
 		World world = location.getWorld();
 		
 		for (int y = location.getBlockY() - 3; y < location.getBlockY() - 1; y++) {
-			for (int x = location.getBlockX(); x < location.getBlockX(); x++) {
-				for (int z = location.getBlockZ(); z < location.getBlockZ(); z++) {
+			for (int x = location.getBlockX()-1; x < location.getBlockX() + 5; x++) {
+				for (int z = location.getBlockZ()-1; z < location.getBlockZ() + 5; z++) {
 					world.getBlockAt(x, y, z).setType(Material.DIRT);
 				}
 			}
@@ -41,7 +41,7 @@ public class IslandCreator {
 		
 		for (int x = location.getBlockX() - 1; x < location.getBlockX() + 5; x++) {
 			for (int z = location.getBlockZ() - 1; z < location.getBlockZ() + 5; z++) {
-				world.getBlockAt(x, location.getBlockY() - 1, z).setType(Material.GRASS);
+				world.getBlockAt(x, location.getBlockY() - 1, z).setType(Material.GRASS_BLOCK);
 			}
 		}
 		
