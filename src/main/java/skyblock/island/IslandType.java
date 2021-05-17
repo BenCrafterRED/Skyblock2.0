@@ -2,5 +2,6 @@ package skyblock.island;
 
 public enum IslandType {
 	classic,
-	round;
+	round,
+	cube;
 }

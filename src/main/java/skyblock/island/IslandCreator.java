@@ -23,11 +23,44 @@ public class IslandCreator {
 	public void createIsland(Location location, IslandType type) {
 		if (type == IslandType.classic) {
 			createClassicIsland(location);
-		} else if (type == IslandType.round) {
+		}else if (type == IslandType.round) {
 			createRoundIsland(location);
+		}else if (type == IslandType.cube) {
+			createCubeIsland(location);
 		}else {
 			throw new IllegalArgumentException("Unknown IslandType: " + type);
 		}
+	}
+	
+	public void createCubeIsland(Location location) {
+		World world = location.getWorld();
+		int yStart = location.getBlockY()-1;
+		int xStart = location.getBlockX()+2;
+		int zStart = location.getBlockZ()+2;
+		for(int y = yStart-2; y <= yStart; y++){
+			 for(int x = xStart-2; x <= xStart; x++){
+				 for(int z = zStart-2; z <= zStart; z++){
+					 location.setX(x);
+                 	 location.setY(y);
+                 	 location.setZ(z);
+                 	 if(y < yStart) {
+                		 world.getBlockAt(location).setType(Material.DIRT);
+                	 }else {
+                	 world.getBlockAt(location).setType(Material.GRASS_BLOCK);
+                	 }
+				 }
+				 
+			 }
+		}
+		Block startChest = world.getBlockAt(location.getBlockX() -1, location.getBlockY()+1, location.getBlockZ()-2);
+		startChest.setType(Material.CHEST);
+		BlockData chestBlockData = startChest.getBlockData();
+		((Directional) chestBlockData).setFacing(BlockFace.WEST);
+		startChest.setBlockData(chestBlockData);
+		Chest chestData = (Chest) startChest.getState();
+		chestData.setLootTable(plugin.getServer().getLootTable(new NamespacedKey(plugin, "chests/start_chest")));
+		
+		world.generateTree(location.add(-1, 0, -1), TreeType.TREE);
 	}
 	
 	public void createRoundIsland(Location location) {
@@ -43,7 +76,11 @@ public class IslandCreator {
                     	location.setX(x);
                     	location.setY(y);
                     	location.setZ(z);
-                    	world.getBlockAt(location).setType(Material.GRASS_BLOCK);
+                    	if(y < yStart) {
+                    		world.getBlockAt(location).setType(Material.DIRT);
+                    	}else {
+                    		world.getBlockAt(location).setType(Material.GRASS_BLOCK);
+                    	}
                     }
                 }
             }
