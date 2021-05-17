@@ -9,11 +9,13 @@ import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BookMeta;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.plugin.Plugin;
+
 
 
 public class IslandCommand extends Command{
@@ -32,11 +34,12 @@ public class IslandCommand extends Command{
 		if(sender instanceof Player) {
 			Player player = ((Player) sender);
 			if(args[0].equals("home")){
-				if(player.getPersistentDataContainer().has(new NamespacedKey(plugin,"islandHomeX"), PersistentDataType.INTEGER)) {
+				if(player.getPersistentDataContainer().has(new NamespacedKey(plugin,"islandHome"), PersistentDataType.INTEGER_ARRAY)) {
 					Location location = player.getLocation();
-					location.setX(player.getPersistentDataContainer().get(new NamespacedKey(plugin,"islandHomeX"), PersistentDataType.INTEGER));
-					location.setY(player.getPersistentDataContainer().get(new NamespacedKey(plugin,"islandHomeY"), PersistentDataType.INTEGER));
-					location.setZ(player.getPersistentDataContainer().get(new NamespacedKey(plugin,"islandHomeZ"), PersistentDataType.INTEGER));
+					int[] homepos = player.getPersistentDataContainer().get(new NamespacedKey(plugin,"islandHome"), PersistentDataType.INTEGER_ARRAY);
+					location.setX(homepos[0]);
+					location.setY(homepos[1]);
+					location.setZ(homepos[2]);
 					player.teleport(location.add(0.5, 2.5, 0.5));
 					return false;
 				}else {
@@ -46,14 +49,10 @@ public class IslandCommand extends Command{
 				
 			}
 			if(args[0].equals("delete")){
-				player.getPersistentDataContainer().set(new NamespacedKey(plugin,"hasIsland"), PersistentDataType.INTEGER, 0);
-				player.getPersistentDataContainer().remove(new NamespacedKey(plugin,"islandHomeX"));
-				player.getPersistentDataContainer().remove(new NamespacedKey(plugin,"islandHomeY"));
-				player.getPersistentDataContainer().remove(new NamespacedKey(plugin,"islandHomeZ"));
+				player.getPersistentDataContainer().remove(new NamespacedKey(plugin,"islandHome"));
 				return false;
 			}
-			if(player.getPersistentDataContainer().getOrDefault(new NamespacedKey(plugin,"hasIsland"), PersistentDataType.INTEGER, 0) <= 0) {
-				player.getPersistentDataContainer().set(new NamespacedKey(plugin,"hasIsland"), PersistentDataType.INTEGER, 1);
+			if(!player.getPersistentDataContainer().has(new NamespacedKey(plugin,"islandHome"), PersistentDataType.INTEGER_ARRAY)) {
 				if(args.length == 5) {
 					if(args[0].equals("create")) {
 						IslandType type = IslandType.valueOf(args[1]);
@@ -61,9 +60,8 @@ public class IslandCommand extends Command{
 						location.setX(Integer.valueOf(args[2])+0.5);
 						location.setY(Integer.valueOf(args[3])-1.5);
 						location.setZ(Integer.valueOf(args[4])+0.5);
-						player.getPersistentDataContainer().set(new NamespacedKey(plugin,"islandHomeX"), PersistentDataType.INTEGER, location.getBlockX());
-						player.getPersistentDataContainer().set(new NamespacedKey(plugin,"islandHomeY"), PersistentDataType.INTEGER, location.getBlockY());
-						player.getPersistentDataContainer().set(new NamespacedKey(plugin,"islandHomeZ"), PersistentDataType.INTEGER, location.getBlockZ());
+						int[] home = {location.getBlockX(), location.getBlockY(), location.getBlockZ()};
+						player.getPersistentDataContainer().set(new NamespacedKey(plugin,"islandHome"), PersistentDataType.INTEGER_ARRAY, home);
 						player.teleport(location.add(0, 1.5, 0));
 						IslandCreator Ceator = new IslandCreator(plugin);
 						player.setBedSpawnLocation(location, true);
@@ -71,14 +69,16 @@ public class IslandCommand extends Command{
 						player.setGameMode(GameMode.SURVIVAL);
 						player.setFoodLevel(20);
 						
-						ItemStack item = new ItemStack(Material.WRITTEN_BOOK);
-						BookMeta Meta = (BookMeta)item.getItemMeta();
-						Meta.setAuthor("Server");
-						Meta.setTitle("Welcome");
-						Meta.addPage(ChatColor.GOLD+"Welcome to skyblock\n\n"+ChatColor.BLUE+"Have Fun!");
-						item.setItemMeta(Meta);
-						
-						player.openBook(item);
+						FileConfiguration config = plugin.getConfig();
+						if(config.getBoolean("islandOptions.welcomeBook")) {
+							ItemStack item = new ItemStack(Material.WRITTEN_BOOK);
+							BookMeta Meta = (BookMeta)item.getItemMeta();
+							Meta.setAuthor("Server");
+							Meta.setTitle("Welcome");
+							Meta.addPage(ChatColor.GOLD+"Welcome to skyblock\n\n"+ChatColor.BLUE+"Have Fun!");
+							item.setItemMeta(Meta);
+							player.openBook(item);
+						}	
 					}else {
 						player.sendMessage(ChatColor.RED+"The parameter " +args[0]+ " does not exist!");
 					}					
@@ -89,7 +89,7 @@ public class IslandCommand extends Command{
 				
 				
 			}else {
-				sender.sendMessage(ChatColor.RED+"You have ready an insland!");
+				sender.sendMessage(ChatColor.RED+"You have already an insland!");
 			}
 		}
 		return false;
