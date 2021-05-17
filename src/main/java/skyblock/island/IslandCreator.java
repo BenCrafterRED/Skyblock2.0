@@ -27,9 +27,45 @@ public class IslandCreator {
 			createRoundIsland(location);
 		}else if (type == IslandType.cube) {
 			createCubeIsland(location);
+		}else if (type == IslandType.botania) {
+			createBotaniaIsland(location);
 		}else {
 			throw new IllegalArgumentException("Unknown IslandType: " + type);
 		}
+	}
+	
+	public void createBotaniaIsland(Location location) {
+		World world = location.getWorld();
+		int yStart = location.getBlockY()-1;
+		int xStart = location.getBlockX()+2;
+		int zStart = location.getBlockZ()+2;
+		for(int y = yStart-3; y <= yStart; y++){
+			 for(int x = xStart-2; x <= xStart; x++){
+				 for(int z = zStart-2; z <= zStart; z++){
+					 location.setX(x);
+                 	 location.setY(y);
+                 	 location.setZ(z);
+                 	 if(y < yStart) {
+                		 world.getBlockAt(location).setType(Material.DIRT);
+                	 }else {
+                	 world.getBlockAt(location).setType(Material.GRASS_BLOCK);
+                	 }
+				 }
+				 
+			 }
+		}world.getBlockAt(location.add(-1, 1, -1)).setType(Material.OAK_SAPLING);
+		world.getBlockAt(location.add(1, -2, 0)).setType(Material.WATER);
+		world.getBlockAt(location.add(0, -1, 1)).setType(Material.SPRUCE_WOOD);
+		world.getBlockAt(location.add(1, -1, 0)).setType(Material.SPRUCE_WOOD);
+		world.getBlockAt(location.add(0, 0, 1)).setType(Material.SPRUCE_WOOD);
+		world.getBlockAt(location.add(-3, 0, -1)).setType(Material.SPRUCE_WOOD);
+		world.getBlockAt(location.add(0, -1, 0)).setType(Material.SPRUCE_WOOD);
+		world.getBlockAt(location.add(-1, 0, 0)).setType(Material.SPRUCE_WOOD);
+		world.getBlockAt(location.add(0, -1, -1)).setType(Material.SPRUCE_WOOD);
+		world.getBlockAt(location.add(2, 1, -3)).setType(Material.SPRUCE_WOOD);
+		world.getBlockAt(location.add(0, 1, 0)).setType(Material.SPRUCE_WOOD);
+		world.getBlockAt(location.add(0, 0, 1)).setType(Material.SPRUCE_WOOD);
+		world.getBlockAt(location.add(0, 1, 0)).setType(Material.SPRUCE_WOOD);
 	}
 	
 	public void createCubeIsland(Location location) {
