@@ -65,7 +65,7 @@ public class IslandCommand extends Command{
 						player.teleport(location.add(0, 1.5, 0));
 						IslandCreator Ceator = new IslandCreator(plugin);
 						player.setBedSpawnLocation(location, true);
-						Ceator.createIsland(location, type);
+						Ceator.createIsland(location, type, player);
 						player.setGameMode(GameMode.SURVIVAL);
 						player.setFoodLevel(20);
 						

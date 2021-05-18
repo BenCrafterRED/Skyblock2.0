@@ -10,6 +10,8 @@ import org.bukkit.block.BlockFace;
 import org.bukkit.block.Chest;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.block.data.Directional;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
 public class IslandCreator {
@@ -20,21 +22,39 @@ public class IslandCreator {
 		this.plugin = plugin;
 	}
 	
-	public void createIsland(Location location, IslandType type) {
+	public void createIsland(Location location, IslandType type, Player player) {
+		FileConfiguration config = plugin.getConfig();
 		if (type == IslandType.classic) {
-			createClassicIsland(location);
+			if(config.getBoolean("islandOptions.islandTypes.classic.allowed")) {
+				createClassicIsland(location);
+				}else{
+					player.sendMessage("The IslandType "+type+" is not allowed!");
+				}
 		}else if (type == IslandType.round) {
-			createRoundIsland(location);
+			if(config.getBoolean("islandOptions.islandTypes.round.allowed")) {
+				createRoundIsland(location);
+				}else{
+					player.sendMessage("The IslandType "+type+" is not allowed!");
+				}
 		}else if (type == IslandType.cube) {
-			createCubeIsland(location);
+			if(config.getBoolean("islandOptions.islandTypes.cube.allowed")) {
+				createCubeIsland(location);
+				}else{
+					player.sendMessage("The IslandType "+type+" is not allowed!");
+				}
 		}else if (type == IslandType.botania) {
-			createBotaniaIsland(location);
+			if(config.getBoolean("islandOptions.islandTypes.classic.allowed")) {
+				createBotaniaIsland(location);
+				}else{
+					player.sendMessage("The IslandType "+type+" is not allowed!");
+				}
 		}else {
 			throw new IllegalArgumentException("Unknown IslandType: " + type);
 		}
 	}
 	
 	public void createBotaniaIsland(Location location) {
+		FileConfiguration config = plugin.getConfig();
 		World world = location.getWorld();
 		int yStart = location.getBlockY()-1;
 		int xStart = location.getBlockX()+2;
@@ -54,7 +74,9 @@ public class IslandCreator {
 				 
 			 }
 		}world.getBlockAt(location.add(-1, 1, -1)).setType(Material.OAK_SAPLING);
-		world.getBlockAt(location.add(1, -2, 0)).setType(Material.WATER);
+		if(config.getBoolean("islandOptions.islandTypes.botania.spawnWithWater")) {
+			world.getBlockAt(location.add(1, -2, 0)).setType(Material.WATER);
+		}
 		world.getBlockAt(location.add(0, -1, 1)).setType(Material.SPRUCE_WOOD);
 		world.getBlockAt(location.add(1, -1, 0)).setType(Material.SPRUCE_WOOD);
 		world.getBlockAt(location.add(0, 0, 1)).setType(Material.SPRUCE_WOOD);
@@ -66,9 +88,18 @@ public class IslandCreator {
 		world.getBlockAt(location.add(0, 1, 0)).setType(Material.SPRUCE_WOOD);
 		world.getBlockAt(location.add(0, 0, 1)).setType(Material.SPRUCE_WOOD);
 		world.getBlockAt(location.add(0, 1, 0)).setType(Material.SPRUCE_WOOD);
+		
+		Block startChest = world.getBlockAt(location.getBlockX() +0, location.getBlockY()+3, location.getBlockZ()+1);
+		startChest.setType(Material.CHEST);
+		BlockData chestBlockData = startChest.getBlockData();
+		((Directional) chestBlockData).setFacing(BlockFace.WEST);
+		startChest.setBlockData(chestBlockData);
+		Chest chestData = (Chest) startChest.getState();
+		chestData.setLootTable(plugin.getServer().getLootTable(new NamespacedKey(plugin, "chests/start_chest")));
 	}
 	
 	public void createCubeIsland(Location location) {
+		FileConfiguration config = plugin.getConfig();
 		World world = location.getWorld();
 		int yStart = location.getBlockY()-1;
 		int xStart = location.getBlockX()+2;
@@ -96,10 +127,15 @@ public class IslandCreator {
 		Chest chestData = (Chest) startChest.getState();
 		chestData.setLootTable(plugin.getServer().getLootTable(new NamespacedKey(plugin, "chests/start_chest")));
 		
-		world.generateTree(location.add(-1, 0, -1), TreeType.TREE);
+		world.generateTree(location.add(-1, 1, -1), TreeType.TREE);
+		
+		if(config.getBoolean("islandOptions.islandTypes.classic.spawnWithWater")) {
+			world.getBlockAt(location.add(-1, -2, 0)).setType(Material.WATER);
+		}
 	}
 	
 	public void createRoundIsland(Location location) {
+		FileConfiguration config = plugin.getConfig();
 		int xStart = location.getBlockX()+2;
     	int yStart = location.getBlockY()-1;
     	int zStart = location.getBlockZ();
@@ -129,11 +165,15 @@ public class IslandCreator {
 		Chest chestData = (Chest) startChest.getState();
 		chestData.setLootTable(plugin.getServer().getLootTable(new NamespacedKey(plugin, "chests/start_chest")));
         
-        world.generateTree(location.add(-3, 0, -2), TreeType.TREE);
+        world.generateTree(location.add(-3, 1, -2), TreeType.TREE);
+        if(config.getBoolean("islandOptions.islandTypes.classic.spawnWithWater")) {
+			world.getBlockAt(location.add(-3, -2, 0)).setType(Material.WATER);
+		}
         
 	}
 	
 	public void createClassicIsland(Location location) {
+		FileConfiguration config = plugin.getConfig();
 		World world = location.getWorld();
 		
 		for (int y = location.getBlockY() - 3; y < location.getBlockY() - 1; y++) {
@@ -167,6 +207,9 @@ public class IslandCreator {
 		chestData.setLootTable(plugin.getServer().getLootTable(new NamespacedKey(plugin, "chests/start_chest")));
 		
 		world.generateTree(location.add(-1, 0, 4), TreeType.TREE);
+		if(config.getBoolean("islandOptions.islandTypes.classic.spawnWithWater")) {
+			world.getBlockAt(location.add(2, -2, -1)).setType(Material.WATER);
+		}
 		
 	}
 }
