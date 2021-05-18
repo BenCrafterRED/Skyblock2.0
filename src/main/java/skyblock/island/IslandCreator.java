@@ -1,5 +1,6 @@
 package skyblock.island;
 
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -25,28 +26,53 @@ public class IslandCreator {
 	public void createIsland(Location location, IslandType type, Player player) {
 		FileConfiguration config = plugin.getConfig();
 		if (type == IslandType.classic) {
-			if(config.getBoolean("islandOptions.islandTypes.classic.allowed")) {
+			if(config.getBoolean("islandOptions.islandTypes.classic.allowed") && config.getBoolean("islandOptions.islandTypes.classic.enable")) {
 				createClassicIsland(location);
-				}else{
-					player.sendMessage("The IslandType "+type+" is not allowed!");
+			}else if(config.getBoolean("islandOptions.islandTypes.classic.enable")){
+				if(player.isOp()) {
+					createClassicIsland(location);
+				}else {
+					player.sendMessage(ChatColor.RED+"The IslandType "+type+" is not allowed!");
 				}
+			}else{
+					player.sendMessage(ChatColor.RED+"The IslandType "+type+" is not enable!");
+			}
+			
 		}else if (type == IslandType.round) {
-			if(config.getBoolean("islandOptions.islandTypes.round.allowed")) {
+			if(config.getBoolean("islandOptions.islandTypes.round.allowed") && config.getBoolean("islandOptions.islandTypes.round.enable")) {
 				createRoundIsland(location);
+			}else if(config.getBoolean("islandOptions.islandTypes.round.enable")){
+				if(player.isOp()) {
+					createClassicIsland(location);
+				}else {
+					player.sendMessage(ChatColor.RED+"The IslandType "+type+" is not allowed!");
+				}
 				}else{
-					player.sendMessage("The IslandType "+type+" is not allowed!");
+					player.sendMessage(ChatColor.RED+"The IslandType "+type+" is not enable!");
 				}
 		}else if (type == IslandType.cube) {
-			if(config.getBoolean("islandOptions.islandTypes.cube.allowed")) {
+			if(config.getBoolean("islandOptions.islandTypes.cube.allowed") && config.getBoolean("islandOptions.islandTypes.cube.enable")) {
 				createCubeIsland(location);
+			}else if(config.getBoolean("islandOptions.islandTypes.cube.enable")){
+				if(player.isOp()) {
+					createClassicIsland(location);
+				}else {
+					player.sendMessage(ChatColor.RED+"The IslandType "+type+" is not allowed!");
+				}
 				}else{
-					player.sendMessage("The IslandType "+type+" is not allowed!");
+					player.sendMessage(ChatColor.RED+"The IslandType "+type+" is not enable!");
 				}
 		}else if (type == IslandType.botania) {
-			if(config.getBoolean("islandOptions.islandTypes.classic.allowed")) {
+			if(config.getBoolean("islandOptions.islandTypes.classic.allowed") && config.getBoolean("islandOptions.islandTypes.botania.enable")) {
 				createBotaniaIsland(location);
+			}else if(config.getBoolean("islandOptions.islandTypes.botania.enable")){
+				if(player.isOp()) {
+					createClassicIsland(location);
+				}else {
+					player.sendMessage(ChatColor.RED+"The IslandType "+type+" is not allowed!");
+				}
 				}else{
-					player.sendMessage("The IslandType "+type+" is not allowed!");
+					player.sendMessage(ChatColor.RED+"The IslandType "+type+" is not enable!");
 				}
 		}else {
 			throw new IllegalArgumentException("Unknown IslandType: " + type);
