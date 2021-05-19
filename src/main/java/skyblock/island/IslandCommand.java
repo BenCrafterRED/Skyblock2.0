@@ -1,6 +1,8 @@
 package skyblock.island;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
@@ -18,15 +20,13 @@ import org.bukkit.plugin.Plugin;
 
 
 
+
 public class IslandCommand extends Command{
 	private Plugin plugin;
 
 	public IslandCommand(Plugin plugin) {
 		super("island", "Creates a new island", "/island <create, delete or home> <type> <coordinates>", Arrays.asList("is"));
 		this.plugin = plugin;
-		
-		
-
 	}
 	
 	@Override
@@ -93,6 +93,35 @@ public class IslandCommand extends Command{
 			}
 		}
 		return false;
+	}
+
+	@Override
+	public List<String> tabComplete(CommandSender sender, String alias, String[] args) {
+			List<String> completion = new ArrayList<>();
+			String[] parameter = {"create", "delete", "home"};
+			if(args.length == 1) {
+				for(int i = 0; i < parameter.length; i++) {
+					if(parameter[i].startsWith(args[0])) {
+						completion.add(parameter[i]);
+					}
+				}
+				completion.sort(null);
+				return completion;
+				
+			}
+			String[] islandTypes = {"botania", "classic", "cube", "round"};
+			if(args.length == 2) {
+				if(args[0].equalsIgnoreCase("create")) {
+					for(int i = 0; i < islandTypes.length; i++) {
+						if(islandTypes[i].startsWith(args[1])) {
+							completion.add(islandTypes[i]);
+						}
+					}
+				}
+				completion.sort(null);
+				return completion;
+			}
+		return null;
 	}
 
 }
