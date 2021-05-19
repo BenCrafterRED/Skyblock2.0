@@ -97,6 +97,8 @@ public class IslandCommand extends Command{
 
 	@Override
 	public List<String> tabComplete(CommandSender sender, String alias, String[] args) {
+		if(sender instanceof Player) {
+			Player player =(Player) sender;
 			List<String> completion = new ArrayList<>();
 			String[] parameter = {"create", "delete", "home"};
 			if(args.length == 1) {
@@ -109,18 +111,32 @@ public class IslandCommand extends Command{
 				return completion;
 				
 			}
-			String[] islandTypes = {"botania", "classic", "cube", "round"};
 			if(args.length == 2) {
 				if(args[0].equalsIgnoreCase("create")) {
-					for(int i = 0; i < islandTypes.length; i++) {
-						if(islandTypes[i].startsWith(args[1])) {
-							completion.add(islandTypes[i]);
-						}
+					for (IslandType type : IslandType.values()) {
+					    if(type.toString().startsWith(args[1])) {
+					    	completion.add(type.toString());
+					    }
 					}
 				}
 				completion.sort(null);
 				return completion;
 			}
+			if(args[0].equalsIgnoreCase("create")) {
+				if(args.length == 3) {
+					completion.add(Integer.valueOf(player.getLocation().getBlockX()).toString());
+					return completion;
+				}
+				if(args.length == 4) {
+					completion.add(Integer.valueOf(player.getLocation().getBlockY()).toString());
+					return completion;
+				}
+				if(args.length == 5) {
+					completion.add(Integer.valueOf(player.getLocation().getBlockZ()).toString());
+					return completion;
+				}
+			}
+		}
 		return null;
 	}
 
