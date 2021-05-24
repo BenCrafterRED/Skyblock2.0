@@ -1,0 +1,6 @@
+world generation bugs:
+ - ocean ravines are generating
+ - ocean-flooded caves generating
+
+world gneration notices:
+ - many structures are generated -> disable and enable only when requested by config file
