@@ -11,6 +11,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import nl.rutgerkok.worldgeneratorapi.WorldGeneratorApi;
 import nl.rutgerkok.worldgeneratorapi.WorldRef;
 import nl.rutgerkok.worldgeneratorapi.decoration.BaseDecorationType;
+import skyblock.features.FeatureManager;
 import skyblock.generator.VoidGenerator;
 import skyblock.island.IslandCommand;
 import skyblock.python.PythonModule;
@@ -20,6 +21,12 @@ public class Main extends JavaPlugin {
 	private static Main instance;
 	public PythonModule pythonModule;
 	public SimpleCommandMap commandMap;
+	private FeatureManager featureManager;
+	
+	@Override
+	public void onLoad() {
+		featureManager = new FeatureManager(this);
+	}
 	
 	@Override
 	public void onEnable() {
@@ -32,12 +39,12 @@ public class Main extends JavaPlugin {
 		
 		commandMap.register(getName(), new IslandCommand(this));
 		
-		PluginManager pluginManager = getServer().getPluginManager();
-
+		featureManager.enableFeatures();
 	}
 	
 	@Override
 	public void onDisable() {
+		featureManager.disableFeatures();
 	}
 	
 	@Override
