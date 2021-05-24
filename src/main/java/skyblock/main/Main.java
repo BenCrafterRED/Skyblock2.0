@@ -27,10 +27,6 @@ public class Main extends JavaPlugin {
 	
 	@Override
 	public void onEnable() {
-		
-		for (Player player : Bukkit.getOnlinePlayers()) {
-			player.kickPlayer(ChatColor.GREEN+"Server rebooted");
-		}
 		instance = this;
 		ServerConfigs.loadConfigs();
 		
