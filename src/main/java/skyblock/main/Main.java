@@ -3,12 +3,8 @@ package skyblock.main;
 
 import java.util.logging.Level;
 
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.command.SimpleCommandMap;
-import org.bukkit.entity.Player;
 import org.bukkit.generator.ChunkGenerator;
-import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import nl.rutgerkok.worldgeneratorapi.WorldGeneratorApi;
@@ -18,7 +14,6 @@ import skyblock.features.FeatureManager;
 import skyblock.generator.VoidGenerator;
 import skyblock.island.IslandCommand;
 import skyblock.python.PythonModule;
-import skyblock.recipe.Recipes;
 
 public class Main extends JavaPlugin {
 	
@@ -43,12 +38,13 @@ public class Main extends JavaPlugin {
 		
 		commandMap.register(getName(), new IslandCommand(this));
 		
-
-		PluginManager pluginManager = getServer().getPluginManager();
-		pluginManager.registerEvents(new Recipes(this), this);
+		//disabled to attack crash while generating new chunk
 		
-		Recipes recipes = new Recipes(this);
-		recipes.load();
+		//PluginManager pluginManager = getServer().getPluginManager();
+		//pluginManager.registerEvents(new Recipes(this), this);
+		
+		//Recipes recipes = new Recipes(this);
+		//recipes.load();
 
 		featureManager.enableFeatures();
 	}
